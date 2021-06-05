@@ -2,6 +2,8 @@ import { Scene } from 'phaser'
 
 class GameScene extends Scene {
 
+  //===========================================
+  //Preload
   preload() {
     this.load.image('sky', 'assets/sky.png')
     this.load.image('ground', 'assets/platform.png')
@@ -13,13 +15,16 @@ class GameScene extends Scene {
     )
   }
 
-  create(){
+  //===========================================
+  //Create
+  create()  {
     const sky = this.add.image(0, 0, 'sky')
     sky.setOrigin(0, 0)
 
     this.createPlatforms()
     this.createPlayer()
     this.createCursor()
+    this.createStars()
   }
 
   createPlatforms() {
@@ -56,10 +61,33 @@ class GameScene extends Scene {
         repeat: -1
     })
   }
+
   createCursor() {
     this.cursors = this.input.keyboard.createCursorKeys()
   }
 
+  createStars() {
+    this.stars = this.physics.add.group({
+      key: 'star',
+      repeat: 11,
+      setXY: { x: 12, y: 0, stepX: 70 }
+    });
+
+    this.stars.children.iterate((child) => {
+      child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+    });
+
+    this.physics.add.collider(this.stars, this.platforms);
+    this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
+  }
+
+  collectStar(player, star) {
+    star.disableBody(true, true);
+  }
+
+
+  //===========================================
+  //Update
   update() {
     if (this.cursors.left.isDown) {
         this.player.setVelocityX(-160);
