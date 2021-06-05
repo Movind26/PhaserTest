@@ -2,7 +2,7 @@ import { Scene } from 'phaser'
 
 class GameScene extends Scene {
   constructor() {
-    super()
+    super('game')
 
     this.score = 0
     this.gameOver = false
