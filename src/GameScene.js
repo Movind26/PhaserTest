@@ -34,6 +34,11 @@ class GameScene extends Scene {
     this.createBombs()
 
     this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' })
+    this.scoreText.setOrigin(0)
+
+    this.gameOverText = this.add.text(400, 300, 'GAME OVER', { fontSize: '64px', fill: '#000' })
+    this.gameOverText.setOrigin(0.5)
+    this.gameOverText.visible = false
   }
 
   createPlatforms() {
@@ -118,6 +123,7 @@ class GameScene extends Scene {
       player.setTint(0xff0000)
       player.anims.play('turn')
       this.gameOver = true
+      this.gameOverText.visible = true
   }
 
 
