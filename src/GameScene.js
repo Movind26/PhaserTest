@@ -9,7 +9,7 @@ class GameScene extends Scene {
   }
 
   //===========================================
-  //Preload
+  // Preload
   preload() {
     this.load.image('sky', 'assets/sky.png')
     this.load.image('ground', 'assets/platform.png')
@@ -22,7 +22,7 @@ class GameScene extends Scene {
   }
 
   //===========================================
-  //Create
+  // Create
   create()  {
     const sky = this.add.image(0, 0, 'sky')
     sky.setOrigin(0, 0)
@@ -33,7 +33,7 @@ class GameScene extends Scene {
     this.createStars()
     this.createBombs()
 
-    this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' })
+    this.scoreText = this.add.text(16, -180, 'Score: 0', { fontSize: '32px', fill: '#000' })
     this.scoreText.setOrigin(0)
 
     this.gameOverText = this.add.text(400, 300, 'GAME OVER', { fontSize: '64px', fill: '#000' })
@@ -51,6 +51,7 @@ class GameScene extends Scene {
 
   createPlayer() {
     this.player = this.physics.add.sprite(100, 450, 'dude')
+    this.player.setCircle(15, 1, 14)
     this.player.setBounce(0.2)
     this.player.setCollideWorldBounds(true)
     this.physics.add.collider(this.player, this.platforms)
@@ -80,6 +81,9 @@ class GameScene extends Scene {
     this.cursors = this.input.keyboard.createCursorKeys()
   }
 
+//--------------------------------
+// Create Stars
+
   createStars() {
     this.stars = this.physics.add.group({
       key: 'star',
@@ -89,6 +93,7 @@ class GameScene extends Scene {
 
     this.stars.children.iterate((child) => {
       child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
+      child.setCircle(12)
     })
 
     this.physics.add.collider(this.stars, this.platforms)
@@ -106,11 +111,15 @@ class GameScene extends Scene {
         });
         const x = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400)
         const bomb = this.bombs.create(x, 16, 'bomb')
+        bomb.setCircle(7)
         bomb.setBounce(1)
         bomb.setCollideWorldBounds(true)
         bomb.setVelocity(Phaser.Math.Between(-200, 200), 20)
     }
   }
+
+//---------------------------------
+// Create Bombs
 
   createBombs() {
     this.bombs = this.physics.add.group()
@@ -127,9 +136,8 @@ class GameScene extends Scene {
   }
 
 
-
   //===========================================
-  //Update
+  // Update
   update() {
     if (this.cursors.left.isDown) {
         this.player.setVelocityX(-160)
