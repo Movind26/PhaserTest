@@ -108,7 +108,7 @@ class GameScene extends Scene {
     if (this.stars.countActive(true) === 0) {
         this.stars.children.iterate((child) => {
             child.enableBody(true, child.x, 0, true, true)
-        });
+        })
         const x = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400)
         const bomb = this.bombs.create(x, 16, 'bomb')
         bomb.setCircle(7)
@@ -133,6 +133,7 @@ class GameScene extends Scene {
       player.anims.play('turn')
       this.gameOver = true
       this.gameOverText.visible = true
+      this.input.on('pointerdown', () => this.scene.start('preload'))
   }
 
 
